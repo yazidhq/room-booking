@@ -1,0 +1,25 @@
+.bg-dark-blue {
+    background-color: #1e3a8a !important;
+}
+
+.bg-muted {
+    background-color: #e5e7eb !important;
+}
+
+.text-dark-blue {
+    color: #1e3a8a !important;
+}
+
+.btn-dark-blue {
+    background-color: #1e3a8a !important;
+    border-radius: 5px !important;
+    border: 0 !important;
+    color: white !important;
+}
+
+.btn-dark-blue:hover {
+    background-color: #1c3785 !important;
+    border-radius: 5px !important;
+    border: 0 !important;
+    color: white !important;
+}
