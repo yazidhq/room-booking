@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RuangController;
 use App\Http\Middleware\UserStatus;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ Route::middleware([UserStatus::class . ':admin'])->group(function () {
             return view('dashboard');
         })->name('dashboard');
     });
+
+    Route::resource('/ruang', RuangController::class);
 });
 
 Route::middleware('auth')->group(function () {
