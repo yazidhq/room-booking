@@ -3,6 +3,7 @@
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProsesController;
+use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\RuangController;
 use App\Http\Middleware\UserStatus;
 use App\Models\Ruang;
@@ -32,6 +33,12 @@ Route::middleware([UserStatus::class . ':admin'])->group(function () {
         })->name('dashboard');
         
         Route::resource('/ruang', RuangController::class);
+
+        Route::resource('/reservasi', ReservasiController::class);
+        Route::controller(ReservasiController::class)->group(function() {
+            Route::get('/terima/{id}', 'terima')->name('terima');
+            Route::get('/tolak/{id}', 'tolak')->name('tolak');
+        });
     });
 });
 

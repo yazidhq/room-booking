@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ruang_id');
             $table->json('jam');
             $table->string('tanggal');
+            $table->string('status')->default("pending");
             $table->timestamps();
 
             $table->foreign("user_id")->on("users")->references("id")->onDelete("cascade");
