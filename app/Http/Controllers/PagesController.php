@@ -10,7 +10,7 @@ class PagesController extends Controller
 {
     public function ruang_detail($id, Request $request)
     {
-        $selectedDate = $request->input('tanggal');
+        $selectedDate = $request->input('tanggal', now()->format('Y-m-d'));
 
         $ruang = Ruang::find($id);
 
