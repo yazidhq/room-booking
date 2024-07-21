@@ -45,19 +45,21 @@ class RuangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
         $ruang = Ruang::findOrFail($id);
-        $now = now()->format('Y-m-d'); 
+        $selectedDate = $request->input('tanggal', now()->format('Y-m-d'));
 
         $reservedTimes = Reservasi::where('ruang_id', $id)
-            ->whereDate('tanggal', $now)
+            ->whereDate('tanggal', $selectedDate)
             ->where('status', 'terima')
             ->pluck('jam')
             ->flatten()
             ->toArray();
+
+        $reservasi = Reservasi::where('ruang_id', $id)->where('tanggal', $selectedDate)->with('user', 'ruang')->orderBy('id', 'DESC')->get();
             
-        return view('admin.ruang.ruang-detail', compact('ruang', 'now', 'reservedTimes'));
+        return view('admin.ruang.ruang-detail', compact('ruang', 'selectedDate', 'reservedTimes', 'reservasi'));
     }
 
     /**
