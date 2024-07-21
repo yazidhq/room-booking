@@ -20,11 +20,19 @@
                 </div>
             </div>
             <div class="mt-3 mb-2">
-                <p class="fs-4 text-center fw-medium">JADWAL HARI INI - {{ $now }}</p>
+                <p class="fs-4 text-center fw-medium mb-0">
+                    JADWAL HARI INI
+                </p>
+                <p class="fs-6 text-center">({{ $now }})</p>
             </div>
             <div class="row no-gutters">
                 @for ($hour = $ruang->jam_buka; $hour < $ruang->jam_tutup; $hour++)
-                    <div class="col border p-2 text-center">
+                    @php
+                        $currentTimeSlot =
+                            str_pad($hour, 2, '0', STR_PAD_LEFT) . ' - ' . str_pad($hour + 1, 2, '0', STR_PAD_LEFT);
+                        $isReserved = in_array($currentTimeSlot, $reservedTimes);
+                    @endphp
+                    <div class="col border border-white p-2 text-center {{ $isReserved ? 'bg-danger' : 'bg-info' }}">
                         <p class="mb-0">{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00 -
                             {{ str_pad($hour + 1, 2, '0', STR_PAD_LEFT) }}:00</p>
                     </div>
@@ -45,21 +53,28 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="tanggal" class="form-label">Tanggal</label>
-                            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                            <input type="date" class="form-control" id="tanggal" name="tanggal"
+                                value="{{ $now }}" required disabled>
                         </div>
                         <div class="mb-3">
-                            <label for="jam" class="form-label">Jam</label>
+                            <label for="jam" class="form-label">Jam Tersedia</label>
                             <select multiple class="form-control" id="jam" name="jam[]" required>
                                 @for ($hour = $ruang->jam_buka; $hour < $ruang->jam_tutup; $hour++)
-                                    <option
-                                        value="{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }} - {{ str_pad($hour + 1, 2, '0', STR_PAD_LEFT) }}">
+                                    @php
+                                        $currentTimeSlot =
+                                            str_pad($hour, 2, '0', STR_PAD_LEFT) .
+                                            ' - ' .
+                                            str_pad($hour + 1, 2, '0', STR_PAD_LEFT);
+                                        $isReserved = in_array($currentTimeSlot, $reservedTimes);
+                                    @endphp
+                                    <option value="{{ $currentTimeSlot }}" {{ $isReserved ? 'hidden' : '' }}>
                                         {{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00 -
                                         {{ str_pad($hour + 1, 2, '0', STR_PAD_LEFT) }}:00
                                     </option>
                                 @endfor
                             </select>
                         </div>
-                        <p>Note: Tekan "SHIFT" untuk memilih lebih dari 1 jam</p>
+                        <p class="text-center">Catatan: Tekan "SHIFT" untuk memilih lebih dari 1 jam</p>
                         @if (auth()->user())
                             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         @endif
