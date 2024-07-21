@@ -16,12 +16,19 @@ Route::get('/', function () {
 
 Route::controller(PagesController::class)->group(function() {
     Route::get('/ruang-detail/{id}', 'ruang_detail')->name('ruang-detail');
+    Route::middleware([UserStatus::class . ':mahasiswa,dosen,umum'])->group(function () {
+        Route::get('/user-profile', 'user_profile')->name('user-profile');
+        Route::get('/user-reservasi', 'user_reservasi')->name('user-reservasi');
+    });
 });
 
 Route::middleware([UserStatus::class . ':mahasiswa,dosen,umum'])->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::controller(ProsesController::class)->group(function() {
             Route::post('/simpan-reservasi', 'simpan_reservasi')->name('simpan-reservasi');
+            Route::post('/ubah-profile', 'ubah_profile')->name('ubah-profile');
+            Route::delete('/hapus-reservasi/{id}', 'hapus_reservasi')->name('hapus-reservasi');
+            Route::get('/ajukan-ulang/{id}', 'ajukan_ulang')->name('ajukan-ulang');
         });
     });
 });

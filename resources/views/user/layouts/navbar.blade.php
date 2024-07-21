@@ -10,8 +10,13 @@
             <ul class="navbar-nav">
                 @if (auth()->user())
                     <li class="nav-item">
-                        <a class="nav-link text-white active fw-bold" aria-current="page"
-                            href={{ route('login') }}>{{ Str::upper(auth()->user()->name) }}</a>
+                        @if (auth()->user()->status == 'admin')
+                            <a class="nav-link text-white active fw-bold" aria-current="page"
+                                href="{{ route('dashboard') }}"">{{ Str::upper(auth()->user()->name) }}</a>
+                        @else
+                            <a class="nav-link text-white active fw-bold" aria-current="page"
+                                href="{{ route('user-profile') }}">{{ Str::upper(auth()->user()->name) }}</a>
+                        @endif
                     </li>
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST">

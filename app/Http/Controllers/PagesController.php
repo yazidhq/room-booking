@@ -39,4 +39,15 @@ class PagesController extends Controller
             'now' => $selectedDate ?: now()->format('Y-m-d')  
         ]);
     }
+
+    public function user_profile()
+    {
+        return view('user.pages.profile');
+    }
+
+    public function user_reservasi()
+    {
+        $reservasi = Reservasi::where('user_id', auth()->user()->id)->with('ruang')->orderBy('id', 'DESC')->get();
+        return view("user.pages.reservasi", compact('reservasi'));
+    }
 }
