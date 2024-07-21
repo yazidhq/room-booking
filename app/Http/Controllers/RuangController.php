@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ruang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RuangController extends Controller
 {
@@ -11,7 +13,8 @@ class RuangController extends Controller
      */
     public function index()
     {
-        return view('admin.ruang.ruang');
+        $ruang = Ruang::orderBy('id', 'DESC')->get();
+        return view('admin.ruang.ruang', compact('ruang'));
     }
 
 
@@ -20,7 +23,22 @@ class RuangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nama_ruang' => ['required'],
+            'jam_buka' => ['required'],
+            'jam_tutup' => ['required'],
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            Ruang::create($validated);
+            DB::commit();
+            return redirect()->back()->with('success', 'Ruang berhasil ditambahkan!');
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ruang gagal ditambahkan!');
+        }
     }
 
     /**
@@ -36,7 +54,24 @@ class RuangController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'nama_ruang' => ['required'],
+            'jam_buka' => ['required'],
+            'jam_tutup' => ['required'],
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $berita = Ruang::findOrFail($id);
+            $berita->update($validated);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Ruang berhasil diubah!');
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ruang gagal diubah!');
+        }
     }
 
     /**
@@ -44,6 +79,9 @@ class RuangController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = Ruang::findOrFail($id);
+        $item->delete();
+
+        return redirect()->back()->with('success', 'Item berhasil dihapus.');
     }
 }
