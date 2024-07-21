@@ -35,15 +35,22 @@
                                     </td>
                                     <td>
                                         @if ($item->status == 'terima' || $item->status == 'tolak')
-                                            Di{{ $item->status }}
+                                            <span
+                                                class="px-2 py-1 text-xs rounded-full text-white {{ $item->status == 'terima' ? 'bg-green-500' : 'bg-red-500' }}">
+                                                Di{{ $item->status }}
+                                            </span>
                                         @else
-                                            {{ ucfirst($item->status) }}
+                                            <span
+                                                class="px-2 py-1 text-xs rounded-full text-white {{ $item->status == 'pending' ? 'bg-yellow-500' : '' }}">
+                                                {{ ucfirst($item->status) }}
+                                            </span>
                                         @endif
                                     </td>
                                     <td>
                                         <div class="flex">
                                             @if ($item->status = 'pending')
-                                                <a href="{{ route('terima', $item->id) }}" class="text-blue-700 btn-sm">
+                                                <a href="{{ route('terima', $item->id) }}"
+                                                    class="text-blue-700 btn-sm">
                                                     Terima
                                                 </a>
                                                 <a href="{{ route('tolak', $item->id) }}"
