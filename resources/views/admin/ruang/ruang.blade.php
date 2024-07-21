@@ -142,7 +142,8 @@
                                                 </div>
                                             </div>
 
-                                            <a href="#" class="text-blue-700 btn-sm mx-3">Detail</a>
+                                            <a href="{{ route('ruang.show', $item->id) }}"
+                                                class="text-blue-700 btn-sm mx-3">Detail</a>
                                             <form action="{{ route('ruang.destroy', $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Anda yakin ingin menghapus item ini?');">
                                                 @csrf

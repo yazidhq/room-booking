@@ -30,7 +30,7 @@
                                     <td>{{ $item->tanggal }}</td>
                                     <td>
                                         @foreach ($item->jam as $key => $jam)
-                                            {{ $jam }}:00{{ $key < count($item->jam) - 1 ? ' | ' : '' }}
+                                            {{ $jam }}{{ $key < count($item->jam) - 1 ? ' | ' : '' }}
                                         @endforeach
                                     </td>
                                     <td>

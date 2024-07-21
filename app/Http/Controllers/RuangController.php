@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservasi;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,17 @@ class RuangController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $ruang = Ruang::findOrFail($id);
+        $now = now()->format('Y-m-d'); 
+
+        $reservedTimes = Reservasi::where('ruang_id', $id)
+            ->whereDate('tanggal', $now)
+            ->where('status', 'terima')
+            ->pluck('jam')
+            ->flatten()
+            ->toArray();
+            
+        return view('admin.ruang.ruang-detail', compact('ruang', 'now', 'reservedTimes'));
     }
 
     /**

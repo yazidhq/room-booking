@@ -33,7 +33,7 @@
                         $isReserved = in_array($currentTimeSlot, $reservedTimes);
                     @endphp
                     <div class="col border border-white p-2 text-center {{ $isReserved ? 'bg-danger' : 'bg-info' }}">
-                        <p class="mb-0">{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00 -
+                        <p class="mb-0 text-white">{{ str_pad($hour, 2, '0', STR_PAD_LEFT) }}:00 -
                             {{ str_pad($hour + 1, 2, '0', STR_PAD_LEFT) }}:00</p>
                     </div>
                 @endfor
