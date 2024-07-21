@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProsesController;
 use App\Http\Controllers\RuangController;
 use App\Http\Middleware\UserStatus;
 use App\Models\Ruang;
@@ -12,16 +13,26 @@ Route::get('/', function () {
     return view('welcome', compact("ruang"));
 })->name('home');
 
-Route::get('/ruang-detail/{id}', [PagesController::class, 'ruang_detail'])->name('ruang-detail');
+Route::controller(PagesController::class)->group(function() {
+    Route::get('/ruang-detail/{id}', 'ruang_detail')->name('ruang-detail');
+});
+
+Route::middleware([UserStatus::class . ':mahasiswa,dosen,umum'])->group(function () {
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::controller(ProsesController::class)->group(function() {
+            Route::post('/simpan-reservasi', 'simpan_reservasi')->name('simpan-reservasi');
+        });
+    });
+});
 
 Route::middleware([UserStatus::class . ':admin'])->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->name('dashboard');
+        
+        Route::resource('/ruang', RuangController::class);
     });
-
-    Route::resource('/ruang', RuangController::class);
 });
 
 Route::middleware('auth')->group(function () {
