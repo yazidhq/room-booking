@@ -1,13 +1,18 @@
 <?php
 
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RuangController;
 use App\Http\Middleware\UserStatus;
+use App\Models\Ruang;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name("home");
+    $ruang = Ruang::get();
+    return view('welcome', compact("ruang"));
+})->name('home');
+
+Route::get('/ruang-detail/{id}', [PagesController::class, 'ruang_detail'])->name('ruang-detail');
 
 Route::middleware([UserStatus::class . ':admin'])->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
