@@ -31,15 +31,21 @@ class ReservasiController extends Controller
     {
         $item = Reservasi::findOrFail($id);
         $item->status = "terima";
+        $item->alasan_penolakan = null;
         $item->save();
 
         return redirect()->back()->with('success', 'Item berhasil diterima.');
     }
 
-    public function tolak(string $id)
+    public function tolak(Request $request, string $id)
     {
+        $data = $request->validate([
+            'alasan_penolakan' => ['required']
+        ]);
+
         $item = Reservasi::findOrFail($id);
         $item->status = "tolak";
+        $item->alasan_penolakan = $data['alasan_penolakan'];
         $item->save();
 
         return redirect()->back()->with('success', 'Item berhasil ditolak.');

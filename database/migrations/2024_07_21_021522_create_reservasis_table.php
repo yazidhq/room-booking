@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('jam');
             $table->string('tanggal');
             $table->string('status')->default("pending");
+            $table->string('alasan_penolakan')->nullable();
             $table->timestamps();
 
             $table->foreign("user_id")->on("users")->references("id")->onDelete("cascade");

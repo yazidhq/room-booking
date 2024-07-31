@@ -71,7 +71,22 @@
                                                                 </div>
                                                             </form>
                                                         @elseif($item->status == 'tolak')
-                                                            <div class="d-grid">
+                                                            <div class="d-flex gap-2">
+                                                                <button type="button"
+                                                                    class="btn btn-success btn-sm text-white"
+                                                                    data-bs-toggle="modal" data-bs-target="#reasonModal">
+                                                                    Lihat Alasan
+                                                                </button>
+                                                                <div class="modal fade" id="reasonModal" tabindex="-1"
+                                                                    aria-labelledby="reasonModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body text-center p-5">
+                                                                                {{ $item->alasan_penolakan }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <a href="{{ route('ajukan-ulang', $item->id) }}"
                                                                     type="submit" class="btn btn-info btn-sm text-white">
                                                                     Ajukan Ulang

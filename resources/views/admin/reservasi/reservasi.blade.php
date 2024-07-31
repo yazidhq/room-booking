@@ -53,10 +53,40 @@
                                                     class="text-blue-700 btn-sm">
                                                     Terima
                                                 </a>
-                                                <a href="{{ route('tolak', $item->id) }}"
-                                                    class="text-blue-700 btn-sm mx-3">
+                                                <label for="modal-toggle-{{ $item->id }}"
+                                                    class="text-blue-700 btn-sm mx-3 cursor-pointer">
                                                     Tolak
-                                                </a>
+                                                </label>
+                                                <input type="checkbox" id="modal-toggle-{{ $item->id }}"
+                                                    class="hidden">
+                                                <div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 hidden"
+                                                    id="modal-{{ $item->id }}">
+                                                    <div
+                                                        class="bg-white rounded-lg overflow-hidden shadow-xl max-w-sm w-full">
+                                                        <div class="px-6 py-4">
+                                                            <div class="text-lg font-semibold text-gray-800">Alasan
+                                                                Penolakan</div>
+                                                            <form action="{{ route('tolak', $item->id) }}"
+                                                                method="POST" class="mt-4">
+                                                                @csrf
+                                                                <textarea name="alasan_penolakan" class="w-full border border-gray-300 rounded p-2" rows="4"
+                                                                    placeholder="Masukkan alasan penolakan"></textarea>
+                                                                <div class="mt-4 flex justify-end">
+                                                                    <label for="modal-toggle-{{ $item->id }}"
+                                                                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2 cursor-pointer">Batal</label>
+                                                                    <button type="submit"
+                                                                        class="bg-red-500 text-white px-4 py-2 rounded">Tolak</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <style>
+                                                    #modal-toggle-{{ $item->id }}:checked+#modal-{{ $item->id }} {
+                                                        display: flex;
+                                                    }
+                                                </style>
                                             @endif
                                             <form action="{{ route('reservasi.destroy', $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Anda yakin ingin menghapus item ini?');">

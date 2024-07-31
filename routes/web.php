@@ -9,9 +9,30 @@ use App\Http\Middleware\UserStatus;
 use App\Models\Ruang;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $ruang = Ruang::get();
-    return view('welcome', compact("ruang"));
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+
+Route::get('/', function (Request $request) {
+    // $ruang = Ruang::get();
+    // return view('welcome', compact("ruang"));
+    $selectedDate = $request->input('tanggal', Carbon::now()->format('Y-m-d'));
+
+    $ruangs = Ruang::with(['reservasi' => function ($query) use ($selectedDate) {
+        $query->whereDate('tanggal', $selectedDate)
+              ->where('status', 'terima');
+    }])->get();
+
+    $ruangDetails = $ruangs->map(function ($ruang) use ($selectedDate) {
+        $reservedTimes = $ruang->reservasi->pluck('jam')->flatten()->toArray();
+        return [
+            'ruang' => $ruang,
+            'reservedTimes' => $reservedTimes,
+            'selectedDate' => $selectedDate,
+            'now' => $selectedDate ?: Carbon::now()->format('Y-m-d')
+        ];
+    });
+
+    return view('welcome', compact('ruangDetails', 'selectedDate'));
 })->name('home');
 
 Route::controller(PagesController::class)->group(function() {
@@ -44,7 +65,7 @@ Route::middleware([UserStatus::class . ':admin'])->group(function () {
         Route::resource('/reservasi', ReservasiController::class);
         Route::controller(ReservasiController::class)->group(function() {
             Route::get('/terima/{id}', 'terima')->name('terima');
-            Route::get('/tolak/{id}', 'tolak')->name('tolak');
+            Route::post('/tolak/{id}', 'tolak')->name('tolak');
         });
     });
 });

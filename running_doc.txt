@@ -1,0 +1,13 @@
+1. Jalankan MySQL dan Apache
+2. Buka CLI (CMD) pada directory sewa-ruang
+3. Ketik 'php artisan migrate'
+4. Ketik 'php artisan db:seed'
+5. Ketik 'php artisan serve' dan biarkan berjalan
+6. Buka CLI (CMD) baru pada directory sewa-ruang
+7. Ketik 'npm run dev' dan biarkan berjalan
+8. Buka browser dan masukkan url http://127.0.0.1:8000/
+
+Note:
+- Ketika melakukan migrate dapat pertanyaan tentang pembuatan database, enter saja karna defaulnya yes. Jika defaultnya no, ketik yes lalu enter maka akan dibuatkan database beserta tabelnya
+- db:seed membuat akun admin dan akun user beserta 3 ruangan, silahkan edit ruangan melalui akun admin.
+- Untuk menjalankan program biarkan 'php artisan serve' dan 'npm run dev' berjalan.
